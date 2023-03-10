@@ -1,53 +1,160 @@
-*,::after,::before{
+:root{
+    --app-bg-color: #121212;
+    --app-text-color: #FFFFFF;
+
+    --input-bg-color: #2E2E2F;
+    --input-text-color: #A5A5A5;
+    --input-btn-bg-color: #4B4B4B;
+}
+
+*, *::before, *::after{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body{
-    background: #121212;
+    background-color: var(--app-bg-color);
+    color: var(--app-text-color);
 }
 
+/* =============================== 
+            typography
+   =============================== */
+a{
+    text-decoration: none;
+    color: inherit;
+}
+nav ul li:nth-child(1){
+    font-size: 4.5rem;
+}
+nav ul li:nth-child(2){
+    font-size: 1rem;
+}
+/* =============================== 
+           END typography
+   =============================== */
+
+
+
+/* =================================
+             nav design 
+   =================================*/
 nav{
     background-image: url(images/image\ 36.png);
-
     width: 100%;
     height: 208px;
-    border: 1px solid red;
 }
 
+nav ul {
+    /* border: 1px solid red; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    list-style: none;
+}
+/* =================================
+            END nav design 
+   =================================*/
+
+
+
+/* =================================
+            input element
+   ================================= */
+.search-input-div,
 .search-input{
-    border: 1px solid green;
-    width: 500px;
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+}
+
+.search-input,
+.search-btn{
+    border: none;
+    height: 100%;
+}
+
+.search-input-div{
+    max-width: 550px;
+    width: 95%;
+    height: 42px;
     margin: 0 auto;
-    height: 38px;
+    border-radius: 25px;
+    /* border: 3px solid green; */
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    background: #2E2E2F;
-}
-.movieName{
-    height: 100%;
-    width: 100%;
-    background: #2E2E2F;
-    border: none;
+    position: absolute;
+    top: 190px;
+    left: 0;
+    right: 0;
 }
 
-.search-logo{
-    padding-left: 7px;
-    width: 100%;
-    height: 100%;
-    color: #9CA3AF;
-    border: none;
+.search-input{
+    width: 80%;
     outline: none;
 }
-
-.btn{
-    width: 120px;
-    height: 100%;
-    background: #4B4B4B;
+.search-btn{
+    width: 20%;
+    color: var(--app-text-color);
+    background-color: var(--input-btn-bg-color);
     padding: 9px 11px;
-    border: none;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.search-input-div i {
+    padding: 1px 15px 0px 20px;
+    font-size: .9rem;
+}
+/* =================================
+           END input element
+   ================================= */
+
+
+
+
+
+
+
+
+
+/* =========================================
+        main rendaring movie from API 
+   ========================================= */
+
+#main-container{
+    border: 1px solid yellow;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    gap: 10px;
+}
+
+.movie-poster{
+    width: 99px;
+}
+
+.movie-details{
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-name-rateing{
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+}
+
+.initial-info{
+    padding-top: 10px;
+    display: flex;
+    gap: 20px;
+}
+
+.plot{
+    padding: 10px 0;
 }

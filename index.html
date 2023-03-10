@@ -17,26 +17,94 @@
 </head>
 
 <body>
+    <!-- navbar -->
     <nav>
         <ul>
             <li><a href="#">Find your film</a></li>
-            <li><a href="#">My Watchlist</a></li>
+            <li><a href="watchList.html">My Watchlist</a></li>
         </ul>
     </nav>
 
-    <form action="">
-        <div class="search-input">
-            <label for="movieName">
-                <!-- <img class="search-logo" src="images/Icon (3).png" alt=""> -->
-                <i class="fa-solid fa-magnifying-glass search-logo"></i>
-            </label>
-            <input type="text" name="movieName" id="movieName" class="movieName">
+    <!-- input element -->
+    <div class="search-input-div">
+        <label for="search-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </label>
+        <input type="text" 
+            name="search-input" 
+            id="search-input" 
+            class="search-input"
+            placeholder="La La Land"
+        >
 
-            <button class="btn" id="search-btn">Search</button>
-        </div>
-    </form>
+        <button class="search-btn" id="search-btn">Search</button>
+    </div>
+    <!-- END of input element -->
+
+    <main id="main">
+        <!-- <div id="main-container">
+            <img src="images/image 33.png" alt="">
+            <div class="movie-details">
+                <div class="movie-name-rateing">
+                    <h2>Blade Runner</h2>
+                    <p>8.1</p>
+                </div>
+    
+                <div class="initial-info">
+                    <p class="time">116 min</p>
+                    <p class="info">Drame,Mystery,Sci-fi</p>
+                    <button class="add-watchList">+</button>
+                </div>
+    
+                <p class="plot">
+                    A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to
+                    Earth to find their creator.
+                </p>
+    
+            </div>
+        </div> -->
+    </main>
 
     <script src="index.js"></script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+    mainHtml += `
+                <div id="main-container">
+                    <img class="movie-poster" src="${item.Poster}" alt="">
+                    <div class="movie-details">
+                        <div class="movie-name-rateing">
+                            <h2>${item.Title}</h2>
+                            <p>8.1</p>
+                        </div>
+            
+                        <div class="initial-info">
+                            <p class="time">${item.Runtime}</p>
+                            <p class="info">Drame,Mystery,Sci-fi</p>
+                            <button class="add-watchList">+</button>
+                        </div>
+            
+                        <p class="plot">
+                            A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to
+                            Earth to find their creator.
+                        </p>
+            
+                    </div>
+                </div>
+                `
+ -->
