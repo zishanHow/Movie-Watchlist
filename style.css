@@ -1,4 +1,4 @@
-:root{
+:root {
     --app-bg-color: #121212;
     --app-text-color: #FFFFFF;
 
@@ -7,13 +7,15 @@
     --input-btn-bg-color: #4B4B4B;
 }
 
-*, *::before, *::after{
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: var(--app-bg-color);
     color: var(--app-text-color);
 }
@@ -21,16 +23,19 @@ body{
 /* =============================== 
             typography
    =============================== */
-a{
+a {
     text-decoration: none;
     color: inherit;
 }
-nav ul li:nth-child(1){
+
+nav ul li:nth-child(1) {
     font-size: 4.5rem;
 }
-nav ul li:nth-child(2){
+
+nav ul li:nth-child(2) {
     font-size: 1rem;
 }
+
 /* =============================== 
            END typography
    =============================== */
@@ -40,7 +45,7 @@ nav ul li:nth-child(2){
 /* =================================
              nav design 
    =================================*/
-nav{
+nav {
     background-image: url(images/image\ 36.png);
     width: 100%;
     height: 208px;
@@ -54,6 +59,7 @@ nav ul {
     justify-content: space-around;
     list-style: none;
 }
+
 /* =================================
             END nav design 
    =================================*/
@@ -64,18 +70,18 @@ nav ul {
             input element
    ================================= */
 .search-input-div,
-.search-input{
+.search-input {
     background-color: var(--input-bg-color);
     color: var(--input-text-color);
 }
 
 .search-input,
-.search-btn{
+.search-btn {
     border: none;
     height: 100%;
 }
 
-.search-input-div{
+.search-input-div {
     max-width: 550px;
     width: 95%;
     height: 42px;
@@ -87,16 +93,17 @@ nav ul {
     align-items: center;
 
     position: absolute;
-    top: 190px;
+    top: 187px;
     left: 0;
     right: 0;
 }
 
-.search-input{
+.search-input {
     width: 80%;
     outline: none;
 }
-.search-btn{
+
+.search-btn {
     width: 20%;
     color: var(--app-text-color);
     background-color: var(--input-btn-bg-color);
@@ -109,6 +116,7 @@ nav ul {
     padding: 1px 15px 0px 20px;
     font-size: .9rem;
 }
+
 /* =================================
            END input element
    ================================= */
@@ -125,7 +133,7 @@ nav ul {
         main rendaring movie from API 
    ========================================= */
 
-#main-container{
+#main-container {
     border: 1px solid yellow;
     width: 500px;
     margin: 0 auto;
@@ -134,27 +142,27 @@ nav ul {
     gap: 10px;
 }
 
-.movie-poster{
+.movie-poster {
     width: 99px;
 }
 
-.movie-details{
+.movie-details {
     display: flex;
     flex-direction: column;
 }
 
-.movie-name-rateing{
+.movie-name-rateing {
     display: flex;
     gap: 10px;
     padding-top: 15px;
 }
 
-.initial-info{
+.initial-info {
     padding-top: 10px;
     display: flex;
     gap: 20px;
 }
 
-.plot{
+.plot {
     padding: 10px 0;
 }
