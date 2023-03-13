@@ -36,6 +36,10 @@ nav ul li:nth-child(2) {
     font-size: 1rem;
 }
 
+h2.movie-name{
+    font-size: 1.3rem;
+}
+
 /* =============================== 
            END typography
    =============================== */
@@ -123,46 +127,69 @@ nav ul {
 
 
 
+/* =================================
+           grid section 
+   =================================*/
+.grid-container{
+    border: 1px solid red;
+    max-width: 550px;
+    width: 95%;
+    margin: 2em auto;
 
+    display: grid;
+    grid-template-columns: 137.5px 137.5px 137.5px 137.5px;
+    grid-template-rows: auto;
 
-
-
-
-
-/* =========================================
-        main rendaring movie from API 
-   ========================================= */
-
-#main-container {
-    border: 1px solid yellow;
-    width: 500px;
-    margin: 0 auto;
-    margin-top: 50px;
-    display: flex;
-    gap: 10px;
+    /* align-items: center;
+    justify-items: start; */
 }
 
-.movie-poster {
-    width: 99px;
+.movie-poster,
+.movie-name,
+.fa-star,
+.duration,
+.type,
+.watchList-btn,
+.plot{
+    border: 1px solid red;
 }
 
-.movie-details {
-    display: flex;
-    flex-direction: column;
-}
+.movie-poster{
+    width: 100%;
+    height: auto;
 
-.movie-name-rateing {
-    display: flex;
-    gap: 10px;
-    padding-top: 15px;
+    grid-column: 1 / 2;
+    grid-row: 1 / span 3;
 }
-
-.initial-info {
-    padding-top: 10px;
-    display: flex;
-    gap: 20px;
+.movie-name{
+    grid-column: 2 / 3; /* grid-column: 2 / span 1; */
+    grid-row: 1 / 2;
 }
+.fa-star{
+    grid-column: 3 / -1;
+    grid-row: 1 / 2;
 
-.plot {
-    padding: 10px 0;
+    align-self: center;
+    justify-self: start;
+}
+.duration{
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+.type{
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+.watchList-btn{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: block;
+
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+}
+.plot{
+    grid-column: 2 / span 3;
+    grid-row: 3 / 4;
 }
