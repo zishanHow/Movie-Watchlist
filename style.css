@@ -131,15 +131,19 @@ nav ul {
            grid section 
    =================================*/
 .grid-container{
-    border: 1px solid red;
+    /* border: 1px solid yellow; */
     max-width: 550px;
     width: 95%;
     margin: 2em auto;
 
     display: grid;
-    grid-template-columns: 137.5px 137.5px 137.5px 137.5px;
-    grid-template-rows: auto;
+    /* grid-template-columns: 137.5px 137.5px 137.5px 137.5px;
+    grid-template-rows: auto; */
 
+    /* grid-template: auto / 137.5px 137.5px 137.5px 137.5px; */
+
+    grid-template: 185px .2em auto auto auto auto / 150px auto;
+    
     /* align-items: center;
     justify-items: start; */
 }
@@ -151,45 +155,84 @@ nav ul {
 .type,
 .watchList-btn,
 .plot{
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 .movie-poster{
+    object-fit: cover;
     width: 100%;
-    height: auto;
+    height: 100%;
 
-    grid-column: 1 / 2;
-    grid-row: 1 / span 3;
+    grid-column: 1 ;
+    grid-row: 1;
 }
 .movie-name{
-    grid-column: 2 / 3; /* grid-column: 2 / span 1; */
-    grid-row: 1 / 2;
+    grid-column: 1 / 2; /* grid-column: 2 / span 1; */
+    grid-row: 3;
 }
 .fa-star{
-    grid-column: 3 / -1;
-    grid-row: 1 / 2;
+    grid-column: 2;
+    grid-row: 3;
 
-    align-self: center;
-    justify-self: start;
+    /* align-self: center;
+    justify-self: start; */
 }
 .duration{
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+    grid-column: 1;
+    grid-row: 4;
 }
 .type{
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
+    grid-column: 1;
+    grid-row: 5;
 }
 .watchList-btn{
-    width: 50px;
-    height: 50px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: block;
 
-    grid-column: 4 / 5;
-    grid-row: 2 / 3;
+    grid-column: 2;
+    grid-row: 5;
 }
 .plot{
-    grid-column: 2 / span 3;
-    grid-row: 3 / 4;
+    grid-column: 1 / -1;
+    grid-row: 6;
+}
+
+@media (min-width: 400px){
+    .grid-container{
+        grid-template: 1em auto auto auto 1em / 137.5px auto auto auto 1em;
+    }
+
+    .movie-poster{
+        /* width: 100%;
+        height: 100%; */
+    
+        grid-row: 1 / -1;
+        grid-column: 1 ;
+    }
+    .movie-name{
+        grid-row: 2;
+        grid-column: 2;
+    }
+    .fa-star{
+        grid-row: 2;
+        grid-column: 3;
+    }
+    .duration{
+        grid-row: 3;
+        grid-column: 2;
+    }
+    .type{
+        grid-row: 3;
+        grid-column: 3;
+    }
+    .watchList-btn{
+        grid-row: 3;
+        grid-column: 4;
+    }
+    .plot{
+        grid-row: 4;
+        grid-column: 2 / -2;
+    }
 }
