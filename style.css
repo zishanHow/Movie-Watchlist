@@ -129,7 +129,7 @@ nav ul {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    display: block;
+    background-color: aquamarine;
 }
 
 /* =================================
@@ -139,13 +139,14 @@ nav ul {
     box-shadow: 0px 0px 4px white;
     max-width: 550px;
     width: 95%;
-    margin: 2em auto;
+    margin: 0 auto;
+    margin-top: 2.5em;
 
     display: grid;
-    grid-template: .3em auto auto auto .3em / minmax(110px, 138px) auto auto 40px;
+    grid-template: .3em auto auto auto .3em / minmax(110px, 138px) auto auto 70px 0px;
     grid-template-areas: 
         "poster . . ."
-        "poster title duration ."
+        "poster title duration watchList"
         "poster type fa-star watchList"
         "poster plot plot plot"
         "poster . . .";
@@ -185,12 +186,14 @@ nav ul {
     grid-column: 4; */
     grid-area: watchList;
     justify-self: center;
+    text-align: center;
+    line-height: 1.2em;
 }
 .movie-plot {
     /* grid-row: 4;
     grid-column: 2 / -1; */
     grid-area: plot;
-    padding-right: .2em;
+    /* padding-right: .2em; */
 }
 
 /* @media (min-width: 415px) {
@@ -201,12 +204,12 @@ nav ul {
 } */
 
 .movie-poster,
-.movie-name,
+.movie-title,
 .fa-star,
 .duration,
-.type,
-.watchList-btn,
-.plot {
+.movie-type,
+.watchList,
+.movie-plot {
     /* border: 1px solid red; */
 }
 

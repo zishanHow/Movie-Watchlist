@@ -31,7 +31,7 @@
         <label for="search-input">
             <i class="fa-solid fa-magnifying-glass"></i>
         </label>
-        <input type="text" name="search-input" id="search-input" class="search-input" placeholder="La La Land">
+        <input type="text" name="search-input" id="search-input" class="search-input" placeholder="La La Land" onkeyup="searchChecking()">
 
         <button class="search-btn" id="search-btn">Search</button>
     </div>
@@ -47,7 +47,8 @@
 
             <p class="duration">116 min</p>
             <p class="movie-type">Drame,Mystery,Sci-fi</p>
-            <button class="watchList btn"><i class="fa-solid fa-plus"></i></button>
+            <!-- <button class="watchList btn"><i class="fa-solid fa-plus"></i></button> -->
+            <p class="watchList">Watchlist<button class="btn"><i class="fa-solid fa-plus"></i></button></p>
 
             <p class="movie-plot">
                 A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to
