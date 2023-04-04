@@ -125,7 +125,7 @@ nav ul {
            END input element
    ================================= */
 
-.btn{
+.btn {
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -144,7 +144,7 @@ nav ul {
 
     display: grid;
     grid-template: .3em auto auto auto .3em / minmax(110px, 138px) auto auto 70px 0px;
-    grid-template-areas: 
+    grid-template-areas:
         "poster . . ."
         "poster title duration watchList"
         "poster type fa-star watchList"
@@ -153,6 +153,7 @@ nav ul {
     gap: .4em;
     align-items: center;
 }
+
 .movie-poster {
     object-fit: cover;
     width: 100%;
@@ -161,26 +162,31 @@ nav ul {
     grid-column: 1; */
     grid-area: poster;
 }
+
 .movie-title {
     /* grid-row: 2;
     grid-column: 2; */
     grid-area: title;
 }
+
 .fa-star {
     /* grid-row: 3;
     grid-column: 3; */
     grid-area: fa-star;
 }
+
 .duration {
     /* grid-row: 2;
     grid-column: 3; */
     grid-area: duration;
 }
+
 .movie-type {
     /* grid-row: 3;
     grid-column: 2; */
     grid-area: type;
 }
+
 .watchList {
     /* grid-row: 3;
     grid-column: 4; */
@@ -189,6 +195,7 @@ nav ul {
     text-align: center;
     line-height: 1.2em;
 }
+
 .movie-plot {
     /* grid-row: 4;
     grid-column: 2 / -1; */

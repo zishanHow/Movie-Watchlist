@@ -3,6 +3,36 @@ const btn = document.getElementById('search-btn')
 const apiKey = "cdf764e"
 const searchInputEl = document.getElementById("search-input")
 
+
+// OMDb API=>(getting movies from it)
+async function getMoviesFromAPI(movieName) {
+    // 1 getting multiple movie data with "s" query(mainly "imdbID")
+    const res = await fetch(`https://www.omdbapi.com/?s=${movieName}&apikey=${apiKey}`)
+    const data = await res.json()
+
+    if (data.Search) {
+        // looping the Search result for "imdbID"
+        for (let id of data.Search) {
+            // 2 getting details of those movies with "i" query, and "imdbID"
+            const res = await fetch(`https://www.omdbapi.com/?i=${id.imdbID}&apikey=${apiKey}`)
+            const movieData = await res.json()
+            console.log(movieData)
+        }
+    }
+}
+
+// getting movie name from search input.
+function searchMoviesByName(name) {
+    name = (searchInputEl.value).replace(/\s+/g, ' ')
+    console.log(name)
+    getMoviesFromAPI(name)
+}
+
+btn.addEventListener("click", () => {
+    searchMoviesByName()
+})
+
+
 /* don't need it for time being(maybe not at all)
 
 btn.addEventListener('click', async() => {
@@ -23,36 +53,3 @@ btn.addEventListener('click', async() => {
     }
 })
 */
-
-// OMDb API=>(getting movies from it)
-async function getMoviesFromAPI(movieName){
-
-    // getting multiple movie data with "s" query(mainly "imdbID")
-    const res = await fetch(`https://www.omdbapi.com/?s=${movieName}&apikey=${apiKey}`)
-    const data = await res.json()
-    
-    // looping the Search result for "imdbID"
-    for(let id of data.Search){
-
-        // getting details of those movies with "i" query, and "imdbID"
-        const res = await fetch(`https://www.omdbapi.com/?i=${id.imdbID}&apikey=${apiKey}`)
-        const movieData = await res.json()
-        console.log(movieData)
-    }
-}
-
-getMoviesFromAPI('la la land')
-
-
-
-
-btn.addEventListener("click", ()=> {
-    searchChecking()
-})
-
-    
-function searchChecking(){
-    let trimChecking = searchInputEl.value
-    
-    console.log(trimChecking.replace(/\s+/g, ' '))
-}
