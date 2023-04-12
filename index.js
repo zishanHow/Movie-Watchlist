@@ -1,28 +1,35 @@
-const searchBtn = document.getElementById('search-btn')
+// const searchBtn = document.getElementById('search-btn')
 const apiKey = "cdf764e"
 const searchInputEl = document.getElementById("search-input")
 
 // handel all the "click" event
 document.addEventListener('click', (e) => {
     if (e.target.id === "search-btn") {
-        searchMoviesByName()
+        // searchMoviesByName()
+        imdbIdFromAPI()
         reset()
-    } else if (e.target.id === "fa-plus") {
-        console.log(e.target.dataset.dataid)
-        // imdbMovieFrmAPI(e.target.dataset.dataid)
+    } else if (e.target.dataset.dataid) {
+        // console.log(e.target.dataset.dataid)
+        const imdbID = e.target.dataset.dataid
+        saveMovieToWatchlist(imdbID)
     }
 })
 
 // OMDb API=>(getting movies from it) [cmt=> 1, and 2.]
 // 1 getting multiple movie data with "s" query(mainly "imdbID")
-async function imdbIdFromAPI(movieName) {
-    const res = await fetch(`https://www.omdbapi.com/?s=${movieName}&apikey=${apiKey}`)
+async function imdbIdFromAPI() {
+    const searchMovie = searchInputEl.value.trim()
+    const res = await fetch(`https://www.omdbapi.com/?s=${searchMovie}&apikey=${apiKey}`)
     const data = await res.json()
     // calling the imdbMovieFrmAPI() with argument for movies
     if (data.Response) {
-        // looping the Search result for every "imdbID"
-        for (let id of data.Search) {
-            imdbMovieFrmAPI(id.imdbID)
+        if(data.Search){
+            // looping the Search result for every "imdbID"
+            for (let id of data.Search) {
+                imdbMovieFrmAPI(id.imdbID)
+            }
+        } else {
+            console.log("put something")
         }
     } else { return null }
 }
@@ -35,17 +42,53 @@ async function imdbMovieFrmAPI(movieI) {
     renderMovie(movieData)
 }
 
-// getting movie name from search input.
-function searchMoviesByName() {
-    let name = (searchInputEl.value).trim()
-    imdbIdFromAPI(name)
+
+/* for watchlish */
+async function getMovieById(movieId){
+    const res = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`)
+    const movieData = await res.json()
+    // const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
+    // return { Title: Title, Poster: Poster, imdbRating: imdbRating,
+    //     Runtime: Runtime, Genre: Genre, Plot: Plot, imdbID: imdbID}
+    return movieData
+}
+
+/* for watchlish */
+function saveMovieToWatchlist(imdbID) {
+    getMovieById(imdbID)
+        // Promise callback
+        .then(movieData => {
+            const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+
+            if(watchlist.some(movie => movie.imdbID === imdbID)){
+                return
+            }
+            watchlist.push({ Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID });
+
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            renderWatchlist()
+        })
+        .catch(err => console.error(err));
+}
+
+function renderWatchlist(){
+    const watchlist = JSON.parse( localStorage.getItem("watchlist")) || []
+    
+    if(watchlist.some(movie => movie.imdbID === "imdbID")){
+        console.log("Item already exist")
+    } else{
+        console.log(watchlist)
+    }
 }
 
 function renderMovie(movie) {
     const theMovie = new Moveis(movie)
-    let showMovieToDOM = theMovie.getMoviesFromAPI()
+    const showMovieToDOM = theMovie.getMoviesFromAPI()
     document.getElementById('movies-el').innerHTML += showMovieToDOM
 }
+
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
@@ -86,3 +129,7 @@ class Moveis {
 /*======================
         End JS Class        
     ======================*/
+    // let data = localStorage.getItem("watchlist")
+    // console.log(data)
+
+    // localStorage.clear()
