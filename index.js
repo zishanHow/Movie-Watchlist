@@ -5,9 +5,9 @@ const searchInputEl = document.getElementById("search-input")
 // handel all the "click" event
 document.addEventListener('click', (e) => {
     if (e.target.id === "search-btn") {
-        // searchMoviesByName()
         imdbIdFromAPI()
         reset()
+        // fun()
     } else if (e.target.dataset.dataid) {
         // console.log(e.target.dataset.dataid)
         const imdbID = e.target.dataset.dataid
@@ -21,12 +21,13 @@ async function imdbIdFromAPI() {
     const searchMovie = searchInputEl.value.trim()
     const res = await fetch(`https://www.omdbapi.com/?s=${searchMovie}&apikey=${apiKey}`)
     const data = await res.json()
-    // calling the imdbMovieFrmAPI() with argument for movies
+
     if (data.Response) {
-        if(data.Search){
+        if (data.Search) {
             // looping the Search result for every "imdbID"
             for (let id of data.Search) {
-                imdbMovieFrmAPI(id.imdbID)
+                // calling render movie function here with argument.
+                renderMovie(id.imdbID)
             }
         } else {
             console.log("put something")
@@ -34,22 +35,17 @@ async function imdbIdFromAPI() {
     } else { return null }
 }
 
+// async function imdbMovieFrmAPI(movieI) {
+//     const res = await fetch(`https://www.omdbapi.com/?i=${movieI}&apikey=${apiKey}`)
+//     const movieData = await res.json()
+//     // renderMovie(movieData)
+//     return movieData
+// }
+
 // 2 getting details of those movies with "i" query, and "imdbID"
-async function imdbMovieFrmAPI(movieI) {
-    const res = await fetch(`https://www.omdbapi.com/?i=${movieI}&apikey=${apiKey}`)
-    const movieData = await res.json()
-    // console.log(movieData)
-    renderMovie(movieData)
-}
-
-
-/* for watchlish */
-async function getMovieById(movieId){
+async function getMovieById(movieId) {
     const res = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`)
     const movieData = await res.json()
-    // const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
-    // return { Title: Title, Poster: Poster, imdbRating: imdbRating,
-    //     Runtime: Runtime, Genre: Genre, Plot: Plot, imdbID: imdbID}
     return movieData
 }
 
@@ -62,7 +58,7 @@ function saveMovieToWatchlist(imdbID) {
             const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
 
-            if(watchlist.some(movie => movie.imdbID === imdbID)){
+            if (watchlist.some(movie => movie.imdbID === imdbID)) {
                 return
             }
             watchlist.push({ Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID });
@@ -73,20 +69,27 @@ function saveMovieToWatchlist(imdbID) {
         .catch(err => console.error(err));
 }
 
-function renderWatchlist(){
-    const watchlist = JSON.parse( localStorage.getItem("watchlist")) || []
-    
-    if(watchlist.some(movie => movie.imdbID === "imdbID")){
+function renderWatchlist() {
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || []
+
+    if (watchlist.some(movie => movie.imdbID === "imdbID")) {
         console.log("Item already exist")
-    } else{
-        console.log(watchlist)
+    } else {
+        for (let i = 0; i < watchlist.length; i++) {
+            console.log(watchlist[i].imdbID)
+        }
     }
 }
 
 function renderMovie(movie) {
-    const theMovie = new Moveis(movie)
-    const showMovieToDOM = theMovie.getMoviesFromAPI()
-    document.getElementById('movies-el').innerHTML += showMovieToDOM
+    // calling the getMovieById() with argument for movies
+    getMovieById(movie)
+        .then(movieData => {
+            const theMovie = new Moveis(movieData)
+            const showMovieToDOM = theMovie.getMoviesFromAPI()
+            document.getElementById('movies-el').innerHTML += showMovieToDOM
+        })
+        .catch(err => console.log(err))
 }
 
 
@@ -127,7 +130,7 @@ class Moveis {
     }
 }
 /*======================
-        End JS Class        
+        End JS Class
     ======================*/
     // let data = localStorage.getItem("watchlist")
     // console.log(data)
