@@ -1,4 +1,3 @@
-// const searchBtn = document.getElementById('search-btn')
 const apiKey = "cdf764e"
 const searchInputEl = document.getElementById("search-input")
 
@@ -35,18 +34,22 @@ async function imdbIdFromAPI() {
     } else { return null }
 }
 
-// async function imdbMovieFrmAPI(movieI) {
-//     const res = await fetch(`https://www.omdbapi.com/?i=${movieI}&apikey=${apiKey}`)
-//     const movieData = await res.json()
-//     // renderMovie(movieData)
-//     return movieData
-// }
-
 // 2 getting details of those movies with "i" query, and "imdbID"
 async function getMovieById(movieId) {
     const res = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`)
     const movieData = await res.json()
     return movieData
+}
+
+function renderMovie(movie) {
+    // calling the getMovieById() with argument for movies
+    getMovieById(movie)
+        .then(movieData => {
+            const theMovie = new Moveis(movieData)
+            const showMovieToDOM = theMovie.getMoviesFromAPI()
+            document.getElementById('movies-el').innerHTML += showMovieToDOM
+        })
+        .catch(err => console.log(err))
 }
 
 /* for watchlish */
@@ -55,15 +58,15 @@ function saveMovieToWatchlist(imdbID) {
         // Promise callback
         .then(movieData => {
             const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
+
             const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
+            if (watchlist.some(movie => movie.imdbID === imdbID)) { return }
 
-            if (watchlist.some(movie => movie.imdbID === imdbID)) {
-                return
-            }
             watchlist.push({ Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID });
 
             localStorage.setItem('watchlist', JSON.stringify(watchlist));
+
             renderWatchlist()
         })
         .catch(err => console.error(err));
@@ -80,18 +83,6 @@ function renderWatchlist() {
         }
     }
 }
-
-function renderMovie(movie) {
-    // calling the getMovieById() with argument for movies
-    getMovieById(movie)
-        .then(movieData => {
-            const theMovie = new Moveis(movieData)
-            const showMovieToDOM = theMovie.getMoviesFromAPI()
-            document.getElementById('movies-el').innerHTML += showMovieToDOM
-        })
-        .catch(err => console.log(err))
-}
-
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
@@ -136,3 +127,13 @@ class Moveis {
     // console.log(data)
 
     // localStorage.clear()
+
+
+
+    
+// async function imdbMovieFrmAPI(movieI) {
+//     const res = await fetch(`https://www.omdbapi.com/?i=${movieI}&apikey=${apiKey}`)
+//     const movieData = await res.json()
+//     // renderMovie(movieData)
+//     return movieData
+// }    
