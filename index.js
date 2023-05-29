@@ -57,13 +57,16 @@ function saveMovieToWatchlist(imdbID) {
     getMovieById(imdbID)
         // Promise callback
         .then(movieData => {
-            const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
-
+            // const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID } = movieData
             const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
-            if (watchlist.some(movie => movie.imdbID === imdbID)) { return }
+            if (watchlist.some(movie => movie.movieData.imdbID === imdbID)) { 
+                console.log("Item already exists")
+                return 
+            }
 
-            watchlist.push({ Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID });
+            // watchlist.push({ Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID });
+            watchlist.push({ movieData });
 
             localStorage.setItem('watchlist', JSON.stringify(watchlist));
 
@@ -75,14 +78,30 @@ function saveMovieToWatchlist(imdbID) {
 function renderWatchlist() {
     const watchlist = JSON.parse(localStorage.getItem("watchlist")) || []
 
-    if (watchlist.some(movie => movie.imdbID === "imdbID")) {
+
+    if(watchlist.length === 0){
+        console.log("Watchlist is empty")
+        return
+    }
+
+    document.getElementById('temporary').innerHTML = "" // Clear existing content(for overwriting)
+
+    for (let i = 0; i < watchlist.length; i++) {
+        let wi = watchlist[i].movieData
+        console.log(wi)
+
+        const theMovie = new Moveis(wi)
+        const showMovieToDOM = theMovie.getMoviesFromAPI()
+        document.getElementById('temporary').innerHTML += showMovieToDOM
+    }
+    /* if (watchlist.some(movie => movie.imdbID === "imdbID")) {
         console.log("Item already exist")
     } else {
-        for (let i = 0; i < watchlist.length; i++) {
-            console.log(watchlist[i].imdbID)
-        }
-    }
+        // the for loop was here!!
+    } */
 }
+
+    // localStorage.clear()
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
@@ -126,11 +145,8 @@ class Moveis {
     // let data = localStorage.getItem("watchlist")
     // console.log(data)
 
-    // localStorage.clear()
 
 
-
-    
 // async function imdbMovieFrmAPI(movieI) {
 //     const res = await fetch(`https://www.omdbapi.com/?i=${movieI}&apikey=${apiKey}`)
 //     const movieData = await res.json()
