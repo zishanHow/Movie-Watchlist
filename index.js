@@ -7,11 +7,14 @@ document.addEventListener('click', (e) => {
         imdbIdFromAPI()
         reset()
         // fun()
-    } else if (e.target.dataset.dataid) {
+    } else if (e.target.classList.contains("fa-plus")) {
         // console.log(e.target.dataset.dataid)
         const imdbID = e.target.dataset.dataid
         saveMovieToWatchlist(imdbID)
-    }
+    } /* else if (e.target.classList.contains("fa-minus")) {
+        const imdbID = e.target.dataset.dataid;
+        toggleFavorite(imdbID);
+    } */
 })
 
 // OMDb API=>(getting movies from it) [cmt=> 1, and 2.]
@@ -29,7 +32,7 @@ async function imdbIdFromAPI() {
                 renderMovie(id.imdbID)
             }
         } else {
-            console.log("put something")
+            console.log("Please enter a search term")
         }
     } else { return null, "API request failed" }
 }
@@ -44,56 +47,52 @@ async function getMovieById(movieId) {
 // Render a movie by imdbID
 function renderMovie(movie) {
     getMovieById(movie)
-      .then(movieData => {
-        const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-  
-        const existingMovie = watchlist.find(item => item.movieData.imdbID === movieData.imdbID);
-        movieData.favorite = existingMovie ? existingMovie.movieData.favorite : false;
-  
-        const theMovie = new Movies(movieData);
-        const showMovieToDOM = theMovie.getMoviesFromAPI();
-        document.getElementById('movies-el').innerHTML += showMovieToDOM;
-      })
-      .catch(err => console.log(err));
-  }
-  
-  
+        .then(movieData => {
+
+            /* const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            const existingMovie = watchlist.find(item => item.movieData.imdbID === movieData.imdbID);
+            movieData.favorite = existingMovie ? existingMovie.movieData.favorite : false; */
+
+            const theMovie = new Movies(movieData);
+            const showMovieToDOM = theMovie.getMoviesFromAPI();
+            document.getElementById('movies-el').innerHTML += showMovieToDOM;
+        })
+        .catch(err => console.log(err));
+}
+
 //   localStorage.clear()
-  
+
 
 
 /* for watchlish */
+// Save a movie to the watchlist
 function saveMovieToWatchlist(imdbID) {
     getMovieById(imdbID)
-      .then(movieData => {
-        const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-        const existingMovie = watchlist.find(movie => movie.movieData.imdbID === imdbID);
-  
-        if (existingMovie) {
-          existingMovie.movieData.favorite = true;
-          console.log('Item already exists');
-        } else {
-          movieData.favorite = true;
-          watchlist.push({ movieData: movieData });
-          console.log('Item added to watchlist');
-        }
-  
-        localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        renderWatchlist();
-  
-        // Update the favorite icon for the rendered movie if it matches the added movie
-        const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
-        if (renderedMovie) {
-          renderedMovie.classList.add("fa-minus");
-          renderedMovie.classList.remove("fa-plus");
-        }
-      })
-      .catch(err => console.error(err));
-  }
-  
+        .then(movieData => {
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            const existingMovie = watchlist.find(movie => movie.movieData.imdbID === imdbID);
 
+            if (existingMovie) {
+                existingMovie.movieData.favorite = true;
+                console.log('Item already exists');
+            } else {
+                movieData.favorite = false;
+                watchlist.push({ movieData: movieData });
+                console.log('Item added to watchlist');
+            }
 
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            renderWatchlist();
 
+            // Update the favorite icon for the rendered movie if it matches the added movie
+            /* const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
+            if (renderedMovie) {
+                renderedMovie.classList.add("fa-minus");
+                renderedMovie.classList.remove("fa-plus");
+            } */
+        })
+        .catch(err => console.error(err));
+}
 
 
 
@@ -119,20 +118,32 @@ function renderWatchlist() {
     }
 }
 
-
-
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
 }
 
 
+/* function toggleFavorite(imdbID) {
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+    const movieIndex = watchlist.findIndex(movie => movie.movieData.imdbID === imdbID);
 
-function toggleFavorite() {
+    if (movieIndex !== -1) {
+        const movie = watchlist[movieIndex];
+        const favoriteIcon = document.querySelector(`i[data-dataid="${imdbID}"]`);
 
-}
+        if (favoriteIcon.classList.contains("fa-minus")) {
+            favoriteIcon.classList.remove("fa-minus");
+            favoriteIcon.classList.add("fa-plus");
+            movie.movieData.dislike();
+        } else {
+            favoriteIcon.classList.remove("fa-plus");
+            favoriteIcon.classList.add("fa-minus");
+            movie.movieData.makeFavorite();
+        }
 
-
-
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    }
+} */
 
 /*======================
         JS Class        
@@ -145,11 +156,11 @@ class Movies {
 
     getMoviesFromAPI() {
         const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID, favorite } = this;
-      
+
         const favoriteIcon = favorite
-          ? `<i class="fa-solid fa-minus" data-dataid="${imdbID}"></i>`
-          : `<i class="fa-solid fa-plus" data-dataid="${imdbID}"></i>`;
-      
+            ? `<i class="fa-solid fa-minus" data-dataid="${imdbID}"></i>`
+            : `<i class="fa-solid fa-plus" data-dataid="${imdbID}"></i>`;
+
         return `
           <div class="grid-container">
             <img class="movie-poster" src="${Poster}" alt="${Title}">
@@ -169,7 +180,7 @@ class Movies {
             </p>
           </div>
         `;
-      }               
+    }
 
 
     makeFavorite() {
