@@ -6,15 +6,10 @@ document.addEventListener('click', (e) => {
     if (e.target.id === "search-btn") {
         imdbIdFromAPI()
         reset()
-        // fun()
-    } else if (e.target.classList.contains("fa-plus")) {
-        // console.log(e.target.dataset.dataid)
+    } else if (e.target.classList.contains('fa-plus')) {
         const imdbID = e.target.dataset.dataid
         saveMovieToWatchlist(imdbID)
-    } /* else if (e.target.classList.contains("fa-minus")) {
-        const imdbID = e.target.dataset.dataid;
-        toggleFavorite(imdbID);
-    } */
+    }
 })
 
 // OMDb API=>(getting movies from it) [cmt=> 1, and 2.]
@@ -32,9 +27,9 @@ async function imdbIdFromAPI() {
                 renderMovie(id.imdbID)
             }
         } else {
-            console.log("Please enter a search term")
+            console.log("put something")
         }
-    } else { return null, "API request failed" }
+    } else { return null }
 }
 
 // 2 getting details of those movies with "i" query, and "imdbID"
@@ -44,58 +39,56 @@ async function getMovieById(movieId) {
     return movieData
 }
 
-// Render a movie by imdbID
 function renderMovie(movie) {
     getMovieById(movie)
         .then(movieData => {
-
-            /* const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            // this three(3) line of code don't needed i shoud delete this later
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
             const existingMovie = watchlist.find(item => item.movieData.imdbID === movieData.imdbID);
-            movieData.favorite = existingMovie ? existingMovie.movieData.favorite : false; */
+            const favorite = existingMovie ? existingMovie.movieData.favorite : false;
 
-            const theMovie = new Movies(movieData);
+            const theMovie = new Movies(Object.assign(movieData, { favorite }));
             const showMovieToDOM = theMovie.getMoviesFromAPI();
-            document.getElementById('movies-el').innerHTML += showMovieToDOM;
+
+            const movieElement = document.createElement('div');
+            movieElement.innerHTML = showMovieToDOM;
+
+            document.getElementById('movies-el').appendChild(movieElement);
         })
         .catch(err => console.log(err));
 }
 
-//   localStorage.clear()
-
-
-
 /* for watchlish */
-// Save a movie to the watchlist
 function saveMovieToWatchlist(imdbID) {
     getMovieById(imdbID)
         .then(movieData => {
             const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-            const existingMovie = watchlist.find(movie => movie.movieData.imdbID === imdbID);
 
+            // Check if the movie already exists in the watchlist
+            const existingMovie = watchlist.find(movie => movie.movieData.imdbID === imdbID);
             if (existingMovie) {
-                existingMovie.movieData.favorite = true;
+                const newMovie = new Movies(movieData);
+                newMovie.favorite = false;
                 console.log('Item already exists');
             } else {
-                movieData.favorite = false;
-                watchlist.push({ movieData: movieData });
+                const newMovie = new Movies(movieData);
+                newMovie.favorite = true; // Set favorite to false for newly added movie
+                watchlist.push({ movieData: newMovie });
                 console.log('Item added to watchlist');
             }
-
             localStorage.setItem('watchlist', JSON.stringify(watchlist));
             renderWatchlist();
 
-            // Update the favorite icon for the rendered movie if it matches the added movie
-            /* const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
+            const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
             if (renderedMovie) {
+                // console.log(renderMovie)
                 renderedMovie.classList.add("fa-minus");
+                renderedMovie.classList.add("red");
                 renderedMovie.classList.remove("fa-plus");
-            } */
+            }
         })
         .catch(err => console.error(err));
 }
-
-
-
 
 function renderWatchlist() {
     const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
@@ -105,93 +98,68 @@ function renderWatchlist() {
         return;
     }
 
-    const watchlistContainer = document.getElementById('temporary');
-    watchlistContainer.innerHTML = ""; // Clear existing content (for overwriting)
+    document.getElementById('temporary').innerHTML = ""; // Clear existing content(for overwriting)
 
     for (let i = 0; i < watchlist.length; i++) {
         let wi = watchlist[i].movieData;
-        console.log(wi);
+        // console.log(wi);
 
         const theMovie = new Movies(wi);
         const showMovieToDOM = theMovie.getMoviesFromAPI();
         document.getElementById('temporary').innerHTML += showMovieToDOM;
     }
 }
+// Toggle favorite/watchlist status of a movie
+/* function toggleFavorite() {
+    const watchlist = JSON.parse(localStorage.getItem('watchlist'))
+    // Check if the movie already exists in the watchlist
+    const existingMovie = watchlist.find(movie => movie.movieData)
+    
+    if(existingMovie) {
+        const imdbID = existingMovie.movieData.imdbID
+        console.log(imdbID)
+    }
+} */
+
+// localStorage.clear()
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
 }
-
-
-/* function toggleFavorite(imdbID) {
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-    const movieIndex = watchlist.findIndex(movie => movie.movieData.imdbID === imdbID);
-
-    if (movieIndex !== -1) {
-        const movie = watchlist[movieIndex];
-        const favoriteIcon = document.querySelector(`i[data-dataid="${imdbID}"]`);
-
-        if (favoriteIcon.classList.contains("fa-minus")) {
-            favoriteIcon.classList.remove("fa-minus");
-            favoriteIcon.classList.add("fa-plus");
-            movie.movieData.dislike();
-        } else {
-            favoriteIcon.classList.remove("fa-plus");
-            favoriteIcon.classList.add("fa-minus");
-            movie.movieData.makeFavorite();
-        }
-
-        localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    }
-} */
 
 /*======================
         JS Class        
     ======================*/
 class Movies {
     constructor(data) {
-        Object.assign(this, data);
+        Object.assign(this, data)
         this.favorite = data.favorite ? true : false;
     }
 
     getMoviesFromAPI() {
         const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID, favorite } = this;
-
-        const favoriteIcon = favorite
-            ? `<i class="fa-solid fa-minus" data-dataid="${imdbID}"></i>`
-            : `<i class="fa-solid fa-plus" data-dataid="${imdbID}"></i>`;
+        const favIcon = favorite ? 'fa-minus red' : 'fa-plus';
 
         return `
-          <div class="grid-container">
-            <img class="movie-poster" src="${Poster}" alt="${Title}">
-          
-            <h2 class="movie-title">${Title}</h2>
-            <i class="fa-solid fa-star"> ${imdbRating}</i>
-          
-            <p class="Runtime">${Runtime}</p>
-            <p class="movie-Genre">${Genre}</p>
-            <p class="watchList">Watchlist
-              <button class="watchlist-btn">
-                ${favoriteIcon}
-              </button>
-            </p>
-            <p class="movie-plot">
-              ${Plot}
-            </p>
-          </div>
-        `;
-    }
-
-
-    makeFavorite() {
-        this.favorite = true;
-    }
-
-    dislike() {
-        this.favorite = false;
+                <div class="grid-container">
+                    <img class="movie-poster" src="${Poster}" alt="${Title}">
+                
+                    <h2 class="movie-title">${Title}</h2>
+                    <i class="fa-solid fa-star"> ${imdbRating}</i>
+                
+                    <p class="Runtime">${Runtime}</p>
+                    <p class="movie-Genre">${Genre}</p>
+                    <!-- <button class="watchList btn"><i class="fa-solid fa-plus"></i></button> -->
+                    <p class="watchList">Watchlist
+                        <button class="watchlist-btn">
+                            <i class="fa-solid ${favIcon}" data-dataid="${imdbID}"></i>
+                        </button>
+                    </p>
+                    <p class="movie-plot">
+                        ${Plot}
+                    </p>
+                </div>
+            `;
     }
 }
 
-/*======================
-        End JS Class
-    ======================*/

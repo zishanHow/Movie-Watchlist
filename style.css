@@ -237,10 +237,13 @@ END of grid section
 
 
 
-
+.red{
+    background-color: red;
+    border-radius: 50%;
+}
 
 
 
 #temporary{
-    margin-top: 10em;
+    margin-top: 30em;
 }
