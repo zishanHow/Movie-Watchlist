@@ -9,6 +9,10 @@ document.addEventListener('click', (e) => {
     } else if (e.target.classList.contains('fa-plus')) {
         const imdbID = e.target.dataset.dataid
         saveMovieToWatchlist(imdbID)
+    } else if (e.target.classList.contains('fa-minus')) {
+        // const imdbID = e.target.dataset.dataid
+        // did it a little bit different way!!!!
+        removeMovie(event)
     }
 })
 
@@ -79,6 +83,7 @@ function saveMovieToWatchlist(imdbID) {
             localStorage.setItem('watchlist', JSON.stringify(watchlist));
             renderWatchlist();
 
+            // it's update the icon from renderMovie list to the DOM!
             const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
             if (renderedMovie) {
                 // console.log(renderMovie)
@@ -91,14 +96,10 @@ function saveMovieToWatchlist(imdbID) {
 }
 
 function renderWatchlist() {
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+    const watchlist = JSON.parse(localStorage.getItem("watchlist"));
 
-    if (watchlist.length === 0) {
-        console.log("Watchlist is empty");
-        return;
-    }
-
-    document.getElementById('temporary').innerHTML = ""; // Clear existing content(for overwriting)
+    // Clear the existing text content of the temporary element
+    document.getElementById('temporary').textContent = ""
 
     for (let i = 0; i < watchlist.length; i++) {
         let wi = watchlist[i].movieData;
@@ -109,19 +110,37 @@ function renderWatchlist() {
         document.getElementById('temporary').innerHTML += showMovieToDOM;
     }
 }
-// Toggle favorite/watchlist status of a movie
-/* function toggleFavorite() {
-    const watchlist = JSON.parse(localStorage.getItem('watchlist'))
-    // Check if the movie already exists in the watchlist
-    const existingMovie = watchlist.find(movie => movie.movieData)
-    
-    if(existingMovie) {
-        const imdbID = existingMovie.movieData.imdbID
-        console.log(imdbID)
-    }
-} */
 
-// localStorage.clear()
+localStorage.clear()
+
+function removeMovie(event) {
+    const imdbID = event.target.dataset.dataid
+
+    const watchlist = JSON.parse(localStorage.getItem("watchlist"))
+
+    // Find the movie in the watchlist by its imdbID (index number)
+    const index = watchlist.findIndex(movie => movie.movieData.imdbID === imdbID);
+    console.log(index)
+
+    // remove movie from watchlist 
+    watchlist.splice(index, 1);
+
+    // Save the watchlist data to localStorage
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+
+    // Update the DOM
+    renderWatchlist();
+
+
+    // it's update the icon from renderMovie list to the DOM!
+    const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
+    if (renderedMovie) {
+        // console.log(renderMovie)
+        renderedMovie.classList.add("fa-plus");
+        renderedMovie.classList.remove("red");
+        renderedMovie.classList.remove("fa-minus");
+    }
+}
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
@@ -162,4 +181,3 @@ class Movies {
             `;
     }
 }
-
