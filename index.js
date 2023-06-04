@@ -16,6 +16,8 @@ document.addEventListener('click', (e) => {
     }
 })
 
+countMoviesInWatchlist()
+
 // OMDb API=>(getting movies from it) [cmt=> 1, and 2.]
 // 1 getting multiple movie data with "s" query(mainly "imdbID")
 async function imdbIdFromAPI() {
@@ -109,9 +111,11 @@ function renderWatchlist() {
         const showMovieToDOM = theMovie.getMoviesFromAPI();
         document.getElementById('temporary').innerHTML += showMovieToDOM;
     }
+
+    countMoviesInWatchlist()
 }
 
-localStorage.clear()
+// localStorage.clear()
 
 function removeMovie(event) {
     const imdbID = event.target.dataset.dataid
@@ -140,6 +144,26 @@ function removeMovie(event) {
         renderedMovie.classList.remove("red");
         renderedMovie.classList.remove("fa-minus");
     }
+}
+
+function countMoviesInWatchlist(){
+    // Get the watchlist data from localStorage
+    const watchlist = JSON.parse(localStorage.getItem("watchlist"));
+
+    // count the number of movies in the watchlist
+    let count = 0;
+    for ( let i = 0; i < watchlist.length; i++) {
+        count++
+    }
+
+    // save count to the localStorage, &  getting it by "getWatchlistCount"
+    localStorage.setItem("count", JSON.stringify(count));
+    let getWatchlistCount = JSON.parse(localStorage.getItem("count"))
+
+    // updating the DOM with movie in the watchlist AKA count
+    document.querySelector(".count").textContent = getWatchlistCount
+    
+    console.log(getWatchlistCount)
 }
 
 function reset() {
