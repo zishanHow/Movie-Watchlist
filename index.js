@@ -9,10 +9,18 @@ document.addEventListener('click', (e) => {
     } else if (e.target.classList.contains('fa-plus')) {
         const imdbID = e.target.dataset.dataid
         saveMovieToWatchlist(imdbID)
+
+        const watchStatusElement = e.target.parentNode.nextElementSibling;
+        // Update the text content of the specific watch status element
+        watchStatusElement.textContent = "Remove";
+
     } else if (e.target.classList.contains('fa-minus')) {
-        // const imdbID = e.target.dataset.dataid
         // did it a little bit different way!!!!
         removeMovie(event)
+
+        const watchStatusElement = e.target.parentNode.nextElementSibling;
+        // Update the text content of the specific watch status element
+        watchStatusElement.textContent = "Watchlist";
     }
 })
 
@@ -45,6 +53,7 @@ async function getMovieById(movieId) {
     return movieData
 }
 
+
 function renderMovie(movie) {
     getMovieById(movie)
         .then(movieData => {
@@ -64,10 +73,12 @@ function renderMovie(movie) {
         .catch(err => console.log(err));
 }
 
+
 /* for watchlish */
 function saveMovieToWatchlist(imdbID) {
     getMovieById(imdbID)
         .then(movieData => {
+            // 
             const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
             // Check if the movie already exists in the watchlist
@@ -83,14 +94,13 @@ function saveMovieToWatchlist(imdbID) {
                 console.log('Item added to watchlist');
             }
             localStorage.setItem('watchlist', JSON.stringify(watchlist));
+
             renderWatchlist();
 
             // it's update the icon from renderMovie list to the DOM!
             const renderedMovie = document.querySelector(`[data-dataid="${imdbID}"]`);
             if (renderedMovie) {
-                // console.log(renderMovie)
                 renderedMovie.classList.add("fa-minus");
-                renderedMovie.classList.add("red");
                 renderedMovie.classList.remove("fa-plus");
             }
         })
@@ -111,7 +121,6 @@ function renderWatchlist() {
         const showMovieToDOM = theMovie.getMoviesFromAPI();
         document.getElementById('temporary').innerHTML += showMovieToDOM;
     }
-
     countMoviesInWatchlist()
 }
 
@@ -141,18 +150,18 @@ function removeMovie(event) {
     if (renderedMovie) {
         // console.log(renderMovie)
         renderedMovie.classList.add("fa-plus");
-        renderedMovie.classList.remove("red");
+        // renderedMovie.classList.remove("red");
         renderedMovie.classList.remove("fa-minus");
     }
 }
 
-function countMoviesInWatchlist(){
+function countMoviesInWatchlist() {
     // Get the watchlist data from localStorage
     const watchlist = JSON.parse(localStorage.getItem("watchlist"));
 
     // count the number of movies in the watchlist
     let count = 0;
-    for ( let i = 0; i < watchlist.length; i++) {
+    for (let i = 0; i < watchlist.length; i++) {
         count++
     }
 
@@ -162,13 +171,19 @@ function countMoviesInWatchlist(){
 
     // updating the DOM with movie in the watchlist AKA count
     document.querySelector(".count").textContent = getWatchlistCount
-    
+
     console.log(getWatchlistCount)
 }
 
 function reset() {
     document.getElementById('movies-el').innerHTML = ""
 }
+
+
+/* function watchStatus(){
+    const remove = document.getElementById("remove")
+    remove.innerHTML = "Remove"
+} */
 
 /*======================
         JS Class        
@@ -181,7 +196,19 @@ class Movies {
 
     getMoviesFromAPI() {
         const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID, favorite } = this;
-        const favIcon = favorite ? 'fa-minus red' : 'fa-plus';
+        const favIcon = favorite
+            ? ` <p class="watchList">
+                <button class="icon-btn">
+                    <i class="icon fa-solid fa-minus" data-dataid="${imdbID}"></i>
+                </button> 
+                <i class="watch-status" id="remove" data-watch="${imdbID}">Remove</i>
+            </p>`
+            : ` <p class="watchList">
+                <button class="icon-btn">
+                    <i class="icon fa-solid fa-plus" data-dataid="${imdbID}"></i>
+                </button> 
+                <i class="watch-status watch" id="watch">Watchlist</i>
+            </p>`;
 
         return `
                 <div class="grid-container">
@@ -193,11 +220,11 @@ class Movies {
                     <p class="Runtime">${Runtime}</p>
                     <p class="movie-Genre">${Genre}</p>
                     <!-- <button class="watchList btn"><i class="fa-solid fa-plus"></i></button> -->
-                    <p class="watchList">Watchlist
-                        <button class="watchlist-btn">
-                            <i class="fa-solid ${favIcon}" data-dataid="${imdbID}"></i>
-                        </button>
-                    </p>
+
+
+                        ${favIcon}
+
+
                     <p class="movie-plot">
                         ${Plot}
                     </p>

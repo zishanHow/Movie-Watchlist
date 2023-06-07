@@ -5,6 +5,8 @@
     --input-bg-color: #2E2E2F;
     --input-text-color: #A5A5A5;
     --input-btn-bg-color: #4B4B4B;
+
+    --watchlist-btn-bg-color: #FFFFFF
 }
 
 *,
@@ -91,7 +93,6 @@ nav ul {
     height: 42px;
     margin: 0 auto;
     border-radius: 25px;
-    /* border: 3px solid green; */
 
     display: flex;
     align-items: center;
@@ -118,29 +119,67 @@ nav ul {
 
 .search-input-div i {
     padding: 1px 15px 0px 20px;
-    font-size: .9rem;
+    font-size: .8rem;
 }
 
 /* =================================
            END input element
    ================================= */
 
-.watchlist-btn {
-    display: block;
+.watchList {
+    font-size: .8rem;
+}
+
+.icon-btn{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 10%;
+    border: none;
+}
+
+.icon{
+    width: 100%;
+    font-size: .9rem;
+    font-weight: 900;
+}
+
+.watch-status{
+    display: inline-block;
+}
+/* .watchlist-btn {
+    display: inline;
     border-radius: 50%;
-    background-color: aquamarine;
+
     border: none;
 }
 
 .watchlist-btn i {
     width: 100%;
-    width: 30px;
-    height: 30px;
+    width: 16px;
+    height: 16px;
+
+    font-size: .7rem;
+    font-weight: 900;
 
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
+
+/* .icon {
+    background-color: var(--watchlist-btn-bg-color);
+    color: var(--app-bg-color);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: .9rem;
+    font-weight: 900;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+  } */
+
 
 /* =================================
            grid section 
@@ -153,11 +192,17 @@ nav ul {
     margin-top: 2.5em;
 
     display: grid;
-    grid-template: .3em auto auto auto .3em / minmax(110px, 138px) auto auto 70px 0px;
+    grid-template: .3em auto auto auto .3em / minmax(110px, 140px) auto auto 70px 0px;
     grid-template-areas:
-        "poster . . ."
+        /* "poster . . ."
         "poster title Runtime watchList"
         "poster Genre fa-star watchList"
+        "poster plot plot plot"
+        "poster . . ."; */
+
+        "poster . . ."
+        "poster title title fa-star"
+        "poster Runtime Genre watchList"
         "poster plot plot plot"
         "poster . . .";
     gap: .4em;
@@ -177,11 +222,11 @@ nav ul {
     /* grid-row: 2;
     grid-column: 2; */
     grid-area: title;
+    flex-grow: 1;
 }
 
 .fa-star {
-    /* grid-row: 3;
-    grid-column: 3; */
+    justify-self: start;
     grid-area: fa-star;
 }
 
@@ -237,13 +282,13 @@ END of grid section
 
 
 
-.red{
+.red {
     background-color: red;
     border-radius: 50%;
 }
 
 
 
-#temporary{
+#temporary {
     margin-top: 30em;
 }
