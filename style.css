@@ -30,6 +30,11 @@ a {
     color: inherit;
 }
 
+.btn{
+    cursor: pointer;
+}
+
+/* navbar */
 nav ul li:nth-child(1) {
     font-size: 4.5rem;
 }
@@ -38,14 +43,37 @@ nav ul li:nth-child(2) {
     font-size: 1rem;
 }
 
-h2.movie-name {
-    font-size: 1.3rem;
+/* input element => search-input-div */
+
+
+/* main => grid-container */
+.first-row h2 {
+    display: inline-block;
+    font-size: 1.125em;
+    padding-right: .5em;
+}
+
+.fa-star,
+.Runtime,
+.movie-Genre,
+.watchList {
+    font-size: .8rem;
+}
+
+.second-row {
+    display: flex;
+    justify-content: space-between;
+    gap: .5em;
+}
+
+.movie-plot {
+    font-size: 0.875rem;
+    color: var(--input-text-color);
 }
 
 /* =============================== 
            END typography
    =============================== */
-
 
 
 /* =================================
@@ -83,8 +111,8 @@ nav ul {
 
 .search-input,
 .search-btn {
-    border: none;
     height: 100%;
+    border: none;
 }
 
 .search-input-div {
@@ -126,60 +154,22 @@ nav ul {
            END input element
    ================================= */
 
-.watchList {
-    font-size: .8rem;
-}
-
-.icon-btn{
+.watchlist-btn {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: 19px;
+    height: 19px;
     border-radius: 10%;
     border: none;
+    outline: none;
 }
 
-.icon{
+.watch-status-btn {
+    padding-top: .09em;
     width: 100%;
-    font-size: .9rem;
+    height: 100%;
+    font-size: 1rem;
     font-weight: 900;
 }
-
-.watch-status{
-    display: inline-block;
-}
-/* .watchlist-btn {
-    display: inline;
-    border-radius: 50%;
-
-    border: none;
-}
-
-.watchlist-btn i {
-    width: 100%;
-    width: 16px;
-    height: 16px;
-
-    font-size: .7rem;
-    font-weight: 900;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
-/* .icon {
-    background-color: var(--watchlist-btn-bg-color);
-    color: var(--app-bg-color);
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    font-size: .9rem;
-    font-weight: 900;
-    text-align: center;
-    display: inline-block;
-    vertical-align: middle;
-  } */
-
 
 /* =================================
            grid section 
@@ -194,15 +184,9 @@ nav ul {
     display: grid;
     grid-template: .3em auto auto auto .3em / minmax(110px, 140px) auto auto 70px 0px;
     grid-template-areas:
-        /* "poster . . ."
-        "poster title Runtime watchList"
-        "poster Genre fa-star watchList"
-        "poster plot plot plot"
-        "poster . . ."; */
-
         "poster . . ."
-        "poster title title fa-star"
-        "poster Runtime Genre watchList"
+        "poster firstRow firstRow firstRow"
+        "poster secRow secRow secRow"
         "poster plot plot plot"
         "poster . . .";
     gap: .4em;
@@ -213,49 +197,19 @@ nav ul {
     object-fit: cover;
     width: 100%;
     height: 100%;
-    /* grid-row: 1 / -1;
-    grid-column: 1; */
     grid-area: poster;
 }
 
-.movie-title {
-    /* grid-row: 2;
-    grid-column: 2; */
-    grid-area: title;
-    flex-grow: 1;
+.first-row {
+    grid-area: firstRow;
 }
 
-.fa-star {
-    justify-self: start;
-    grid-area: fa-star;
-}
-
-.Runtime {
-    /* grid-row: 2;
-    grid-column: 3; */
-    grid-area: Runtime;
-}
-
-.movie-Genre {
-    /* grid-row: 3;
-    grid-column: 2; */
-    grid-area: Genre;
-}
-
-.watchList {
-    /* grid-row: 3;
-    grid-column: 4; */
-    grid-area: watchList;
-    justify-self: center;
-    text-align: center;
-    line-height: 1.2em;
+.second-row {
+    grid-area: secRow;
 }
 
 .movie-plot {
-    /* grid-row: 4;
-    grid-column: 2 / -1; */
     grid-area: plot;
-    /* padding-right: .2em; */
 }
 
 /* @media (min-width: 415px) {
@@ -266,7 +220,7 @@ nav ul {
 } */
 
 .movie-poster,
-.movie-title,
+.first-row,
 .fa-star,
 .Runtime,
 .movie-Genre,
@@ -276,15 +230,20 @@ nav ul {
 }
 
 /* =================================
-END of grid section 
-=================================*/
+        END of grid section 
+====================================*/
 
 
-
-
-.red {
-    background-color: red;
-    border-radius: 50%;
+/* =============================
+            footer              
+   ============================= */
+footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 3.5em;
+    border: 1px solid red;
+    background-color: var(--input-bg-color);
 }
 
 

@@ -179,12 +179,6 @@ function reset() {
     document.getElementById('movies-el').innerHTML = ""
 }
 
-
-/* function watchStatus(){
-    const remove = document.getElementById("remove")
-    remove.innerHTML = "Remove"
-} */
-
 /*======================
         JS Class        
     ======================*/
@@ -197,33 +191,34 @@ class Movies {
     getMoviesFromAPI() {
         const { Title, Poster, imdbRating, Runtime, Genre, Plot, imdbID, favorite } = this;
         const favIcon = favorite
-            ? ` <p class="watchList">
-                <button class="icon-btn">
-                    <i class="icon fa-solid fa-minus" data-dataid="${imdbID}"></i>
+            ? ` <button class="btn watchlist-btn">
+                    <i class="watch-status-btn fa-solid fa-minus" data-dataid="${imdbID}"></i>
                 </button> 
                 <i class="watch-status" id="remove" data-watch="${imdbID}">Remove</i>
-            </p>`
-            : ` <p class="watchList">
-                <button class="icon-btn">
-                    <i class="icon fa-solid fa-plus" data-dataid="${imdbID}"></i>
+              `
+            : ` <button class="btn watchlist-btn">
+                    <i class="watch-status-btn fa-solid fa-plus" data-dataid="${imdbID}"></i>
                 </button> 
                 <i class="watch-status watch" id="watch">Watchlist</i>
-            </p>`;
+              `;
 
         return `
                 <div class="grid-container">
                     <img class="movie-poster" src="${Poster}" alt="${Title}">
                 
-                    <h2 class="movie-title">${Title}</h2>
-                    <i class="fa-solid fa-star"> ${imdbRating}</i>
+                    <div class="first-row">
+                        <h2>${Title}</h2>
+                        <i class="fa-solid fa-star"> ${imdbRating}</i>
+                    </div>
                 
-                    <p class="Runtime">${Runtime}</p>
-                    <p class="movie-Genre">${Genre}</p>
-                    <!-- <button class="watchList btn"><i class="fa-solid fa-plus"></i></button> -->
+                    <div class="second-row">
+                        <p class="Runtime">${Runtime}</p>
+                        <p class="movie-Genre">${Genre}</p>
 
-
-                        ${favIcon}
-
+                        <p class="watchList">
+                            ${favIcon}
+                        </p>
+                    </div>
 
                     <p class="movie-plot">
                         ${Plot}
@@ -231,4 +226,4 @@ class Movies {
                 </div>
             `;
     }
-}
+}      
