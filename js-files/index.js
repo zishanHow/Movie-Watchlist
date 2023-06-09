@@ -1,5 +1,8 @@
 const apiKey = "cdf764e"
-const searchInputEl = document.getElementById("search-input")
+const searchInputEl = document.getElementById("search-input");
+
+const moviesEl = document.getElementById('movies-el')
+
 
 // handel all the "click" event
 document.addEventListener('click', (e) => {
@@ -7,22 +10,28 @@ document.addEventListener('click', (e) => {
         imdbIdFromAPI()
         reset()
     } else if (e.target.classList.contains('fa-plus')) {
-        const imdbID = e.target.dataset.dataid
-        saveMovieToWatchlist(imdbID)
-
-        const watchStatusElement = e.target.parentNode.nextElementSibling;
-        // Update the text content of the specific watch status element
-        watchStatusElement.textContent = "Remove";
+        addMovieToWatchlist(e)
 
     } else if (e.target.classList.contains('fa-minus')) {
-        // did it a little bit different way!!!!
-        removeMovie(event)
-
-        const watchStatusElement = e.target.parentNode.nextElementSibling;
-        // Update the text content of the specific watch status element
-        watchStatusElement.textContent = "Watchlist";
+        removeMovieFromWatchlist(e)
     }
 })
+
+function addMovieToWatchlist(e) {
+    const imdbID = e.target.dataset.dataid
+    saveMovieToWatchlist(imdbID)
+
+    // Update the text content of the specific watch status element
+    e.target.parentNode.nextElementSibling.textContent = "Remove";
+}
+
+function removeMovieFromWatchlist(e) {
+    const imdbID = e.target.dataset.dataid
+    removeMovie(imdbID)
+
+    // Update the text content of the specific watch status element
+    e.target.parentNode.nextElementSibling.textContent = "Watchlist";
+}
 
 countMoviesInWatchlist()
 
@@ -37,11 +46,19 @@ async function imdbIdFromAPI() {
         if (data.Search) {
             // looping the Search result for every "imdbID"
             for (let id of data.Search) {
-                // calling render movie function here with argument.
-                renderMovie(id.imdbID)
+                renderMovie(id.imdbID) //calling renderMovie() with imdbID's
             }
         } else {
-            console.log("put something")
+            // movie not found message!!
+            const errorMessage = `Unable to find what you’re looking for. Please try another search.`
+            const errorMessageEl = `
+                    <div class="default">
+                        <p class="error-message-not-find-movie">
+                            ${errorMessage}
+                        </p>
+                    </div>
+                `
+            moviesEl.innerHTML = errorMessageEl
         }
     } else { return null }
 }
@@ -53,26 +70,20 @@ async function getMovieById(movieId) {
     return movieData
 }
 
-
+// render movie to the DOM from imdbAPI
 function renderMovie(movie) {
     getMovieById(movie)
         .then(movieData => {
-            // this three(3) line of code don't needed i shoud delete this later
-            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-            const existingMovie = watchlist.find(item => item.movieData.imdbID === movieData.imdbID);
+
+            const watchlist = JSON.parse(localStorage.getItem('watchlist'))
+            const existingMovie = watchlist.find(movie => movie.movieData.imdbID === movieData.imdbID)
             const favorite = existingMovie ? existingMovie.movieData.favorite : false;
 
             const theMovie = new Movies(Object.assign(movieData, { favorite }));
-            const showMovieToDOM = theMovie.getMoviesFromAPI();
-
-            const movieElement = document.createElement('div');
-            movieElement.innerHTML = showMovieToDOM;
-
-            document.getElementById('movies-el').appendChild(movieElement);
+            moviesEl.innerHTML += theMovie.getMoviesFromAPI()
         })
         .catch(err => console.log(err));
 }
-
 
 /* for watchlish */
 function saveMovieToWatchlist(imdbID) {
@@ -126,9 +137,7 @@ function renderWatchlist() {
 
 // localStorage.clear()
 
-function removeMovie(event) {
-    const imdbID = event.target.dataset.dataid
-
+function removeMovie(imdbID) {
     const watchlist = JSON.parse(localStorage.getItem("watchlist"))
 
     // Find the movie in the watchlist by its imdbID (index number)
@@ -170,13 +179,13 @@ function countMoviesInWatchlist() {
     let getWatchlistCount = JSON.parse(localStorage.getItem("count"))
 
     // updating the DOM with movie in the watchlist AKA count
-    document.querySelector(".count").textContent = getWatchlistCount
+    document.querySelector(".watchlist-count").textContent = getWatchlistCount
 
     console.log(getWatchlistCount)
 }
 
 function reset() {
-    document.getElementById('movies-el').innerHTML = ""
+    moviesEl.innerHTML = ""
 }
 
 /*======================
@@ -208,7 +217,7 @@ class Movies {
                 
                     <div class="first-row">
                         <h2>${Title}</h2>
-                        <i class="fa-solid fa-star"> ${imdbRating}</i>
+                        <i class="fa-solid fa-star"><p> ${imdbRating}</p> </i>
                     </div>
                 
                     <div class="second-row">

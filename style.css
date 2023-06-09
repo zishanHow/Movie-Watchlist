@@ -2,11 +2,17 @@
     --app-bg-color: #121212;
     --app-text-color: #FFFFFF;
 
+    --star-gold-color: #FEC654;
+    --count-red-color: #c1121f;
+
     --input-bg-color: #2E2E2F;
-    --input-text-color: #A5A5A5;
+    --input-text-color: #9CA3AF;
     --input-btn-bg-color: #4B4B4B;
 
-    --watchlist-btn-bg-color: #FFFFFF
+    --movie-plot-text-color: #A5A5A5;
+    --not-find-movie-text-color: #787878;
+
+    /* --watchlist-btn-bg-color: #FFFFFF */
 }
 
 *,
@@ -15,11 +21,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: inherit;
 }
 
 body {
+    max-width: 1499px;
+    margin: 0 auto;
+
     background-color: var(--app-bg-color);
     color: var(--app-text-color);
+    font-family: 'Inter', sans-serif;
 }
 
 /* =============================== 
@@ -36,11 +47,13 @@ a {
 
 /* navbar */
 nav ul li:nth-child(1) {
-    font-size: 4.5rem;
+    font-size: 3rem;
+    font-weight: 800;
 }
 
 nav ul li:nth-child(2) {
-    font-size: 1rem;
+    font-size: .8rem;
+    font-weight: 700;
 }
 
 /* input element => search-input-div */
@@ -50,14 +63,8 @@ nav ul li:nth-child(2) {
 .first-row h2 {
     display: inline-block;
     font-size: 1.125em;
-    padding-right: .5em;
-}
-
-.fa-star,
-.Runtime,
-.movie-Genre,
-.watchList {
-    font-size: .8rem;
+    font-weight: 500;
+    padding-right: .3em;
 }
 
 .second-row {
@@ -66,11 +73,28 @@ nav ul li:nth-child(2) {
     gap: .5em;
 }
 
-.movie-plot {
-    font-size: 0.875rem;
-    color: var(--input-text-color);
+.fa-star,
+.Runtime,
+.movie-Genre,
+.watchList {
+    font-size: .8rem;
+    font-weight: 400;
 }
 
+i.fa-star{
+    font-weight: 900;
+    color: var(--star-gold-color);
+}
+i.fa-star p {
+    display: inline;
+    color: var(--app-text-color);
+}
+
+.movie-plot {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--movie-plot-text-color);
+}
 /* =============================== 
            END typography
    =============================== */
@@ -94,9 +118,54 @@ nav ul {
     list-style: none;
 }
 
+.watchlist-count{
+    color: var(--count-red-color);
+    font-size: 1.3rem;
+    font-weight: 800;
+}
 /* =================================
             END nav design 
    =================================*/
+
+
+
+/* ===========================
+           start default 
+   ===========================*/
+
+.default{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 57%;
+    bottom: 33%;
+    right: 0;
+    left: 0;
+}   
+
+.default .fa-film{
+    font-size: 3.5rem;
+    color: var(--input-bg-color);
+}
+
+.default p {
+    font-size: 1.2rem;
+    color: var(--input-bg-color);
+    font-weight: 800;
+    max-width: 18em;
+}
+
+.error-message-not-find-movie {
+    color: var(--not-find-movie-text-color) !important;
+}
+
+/* ===========================
+           END default 
+   ===========================*/
 
 
 
@@ -112,6 +181,8 @@ nav ul {
 .search-input,
 .search-btn {
     height: 100%;
+    font-size: 0.875em;
+    font-weight: 500;
     border: none;
 }
 
@@ -138,6 +209,7 @@ nav ul {
 
 .search-btn {
     width: 20%;
+    letter-spacing: .4px;
     color: var(--app-text-color);
     background-color: var(--input-btn-bg-color);
     padding: 9px 11px;
